@@ -1,0 +1,26 @@
+.navbar-expand-lg {
+    background: #fff;
+    box-shadow: 15px 9px 25px 0 rgba(0, 0, 0, 0.1);
+}
+.theme-white .navbar {
+    background: #fff;
+    box-shadow: 15px 9px 25px 0 rgba(0, 0, 0, 0.1);
+}
+.main-content {
+        background-color: #f6f6f6;    
+}
+.theme-white .navbar .nav-link .feather {
+    color: #555556;
+}
+
+.navbar .form-inline .search-element .form-control {
+    background-color: #f0f3ff;
+    border-radius: 5px 0 0 5px;
+}
+.navbar .form-inline .search-element .btn {
+    background-color: #f0f3ff;
+    border-radius: 0px 5px 5px 0px;
+}
+.activee{
+    color: none;
+}
