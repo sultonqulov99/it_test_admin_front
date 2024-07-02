@@ -1,53 +1,70 @@
 // src/ForgotPassword.js
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './ForgotPassword.css';
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AppLayoutContext } from "../../../Layouts/MainLayout";
+import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
-  const [phone, setPhone] = useState('');
+  const { API } = useContext(AppLayoutContext);
+  const [phone, setPhone] = useState("");
   const [showPasswordFields, setShowPasswordFields] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isError, setIsError] = useState('');
-  const token = window.localStorage.getItem("token")
-  const navigate = useNavigate()
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isError, setIsError] = useState("");
+  const token = window.localStorage.getItem("token");
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!showPasswordFields) {
-      // Email yoki telefon raqamini yuborish
-      console.log('Email yoki telefon raqami:', phone);
+      console.log("Email yoki telefon raqami:", phone);
       setShowPasswordFields(true);
     } else {
-      // Yangi parolni tasdiqlash
       if (newPassword !== confirmPassword) {
-        alert('Parollar mos kelmadi!');
+        alert("Parollar mos kelmadi!");
       } else {
-        axios.put("https://it-test-backend.onrender.com/api/admin-update",{
-          "contact":phone,
-          "password":newPassword,
-          "r_password":confirmPassword
-        },{
-          headers:{
-            "token":token
-          }
-        }).then(res => {
-          if(res.status === 200){
-            navigate("/login")
-          }
-        }).catch(error => {
-          console.log(error)
-          setIsError(error.response.data.massage)
-        })
+        axios
+          .put(
+            `${API}/api/admin-update`,
+            {
+              contact: phone,
+              password: newPassword,
+              r_password: confirmPassword,
+            },
+            {
+              headers: {
+                token: token,
+              },
+            }
+          )
+          .then((res) => {
+            if (res.status === 200) {
+              navigate("/login");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            setIsError(error.response.data.massage);
+          });
       }
     }
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '400px' }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", width: "400px" }}
+      >
         <h2>Parolni tiklash</h2>
-        <span style={{"color":"red"}}>{isError}</span>
+        <span style={{ color: "red" }}>{isError}</span>
         <label>
           Telefon raqami:
           <input
@@ -83,7 +100,9 @@ const ForgotPassword = () => {
             </label>
           </>
         )}
-        <button type="submit">{showPasswordFields ? 'Parolni tasdiqlash' : 'Yuborish'}</button>
+        <button type="submit">
+          {showPasswordFields ? "Parolni tasdiqlash" : "Yuborish"}
+        </button>
       </form>
     </div>
   );

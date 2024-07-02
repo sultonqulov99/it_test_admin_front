@@ -4,13 +4,13 @@ import "../../assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootst
 import "../../assets/css/style.css";
 import "../../assets/css/components.css";
 import "../../assets/css/custom.css";
-import USER_IMG from "../../assets/img/user.png";
-import img_logo from "../../assets/img/It live logO.png";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AppLayoutContext } from "../../Layouts/MainLayout";
 
 export default function Question_Index() {
+  const { API } = useContext(AppLayoutContext);
   const [list, setList] = useState(false);
   const [questionTests, setQuestionTests] = useState([]);
   const [count, setCount] = useState(false);
@@ -19,9 +19,7 @@ export default function Question_Index() {
   useEffect(() => {
     async function fetchTests() {
       try {
-        const res = await axios.get(
-          "https://it-test-backend.onrender.com/api/test/all"
-        );
+        const res = await axios.get(`${API}/api/test/all`);
         setQuestionTests(res.data.data);
       } catch (error) {
         console.log(error);
@@ -34,9 +32,7 @@ export default function Question_Index() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(
-          "https://it-test-backend.onrender.com/api/users/subjects/all"
-        );
+        const res = await axios.get(`${API}/api/users/subjects/all`);
         const categoryMap = {};
         res.data.data.forEach((category) => {
           categoryMap[category._id] = category.name;
@@ -51,7 +47,7 @@ export default function Question_Index() {
 
   function handlerDelete(id) {
     axios
-      .delete(`https://it-test-backend.onrender.com/api/delete-test/${id}`)
+      .delete(`${API}/api/delete-test/${id}`)
       .then((res) => {
         setCount(count - 1);
       })
@@ -177,7 +173,7 @@ export default function Question_Index() {
                                       <td>{question.correct_answer}</td>
                                       <td className="d-flex">
                                         <Link
-                                          to="/Question_Edit"
+                                          to={"/Question_Edit/" + question._id}
                                           className="btn btn-success"
                                         >
                                           Edit

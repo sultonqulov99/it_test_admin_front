@@ -17,6 +17,7 @@ import Results from "./components/Results/Results";
 import Contact from "./components/Contact/index"
 import Login from "./components/Auth/Login/Login";
 import ForgotPassword from "./components/Auth/ForgotPassword/ForgotPassword";
+import Questionimg_Edit from "./components/Questionimg/Edit";
 
 export default function App() {
   return (
@@ -39,10 +40,10 @@ export default function App() {
           <Route path="Courses_Edit/:id" element={<Courses_Edit />} />
           <Route path="Courses_index" element={<Courses_index />} />
           <Route path="Question_Create" element={<Question_Create />} />
-          <Route path="Question_Edit" element={<Question_Edit />} />
+          <Route path="Question_Edit/:id" element={<Question_Edit />} />
           <Route path="Question_Index" element={<Question_Index />} />
           <Route path="Questionimg_Create" element={<Questionimg_Create />} />
-          {/* <Route path="/Question_Edit" element={<Question_Edit />} /> */}
+          <Route path="Questionimg_Edit/:id" element={<Questionimg_Edit />} />
           <Route path="Questionimg_Index" element={<Questionimg_Index />} />
           <Route path="students" element={<Students />} />
           <Route path="result" element={<Results />} />

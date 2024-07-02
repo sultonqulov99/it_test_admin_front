@@ -1,12 +1,9 @@
-import { useState } from "react";
 import imgLogo from "../assets/img/It live logO.png";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
-  const [activeNav, setActiveNav] = useState("Uskunalar");
-
   const path = useLocation();
-  
+
   const nav = [
     {
       id: 0,
@@ -155,22 +152,22 @@ export default function Sidebar() {
       name: "Natijalar",
       isHaveSubnav: true,
       icon: (
-        <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        size="24"
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className="feather feather-check-circle"
-      >
-        <path d="M9 11l3 3L22 4" />
-        <circle cx="12" cy="12" r="10" />
-      </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          size="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="feather feather-check-circle"
+        >
+          <path d="M9 11l3 3L22 4" />
+          <circle cx="12" cy="12" r="10" />
+        </svg>
       ),
       path: "/result",
     },
@@ -179,27 +176,27 @@ export default function Sidebar() {
       name: "Xabarlar",
       isHaveSubnav: true,
       icon: (
-        <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        size="24"
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className="feather feather-message-circle"
-      >
-        <path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4 8.5 8.5 0 0 1-12.8 0 8.38 8.38 0 0 1-1.9-5.4 8.38 8.38 0 0 1 1.9-5.4 8.5 8.5 0 0 1 12.8 0 8.38 8.38 0 0 1 1.9 5.4z" />
-        <line x1="8" y1="11" x2="16" y2="11" />
-        <line x1="8" y1="15" x2="16" y2="15" />
-        <line x1="12" y1="7" x2="12" y2="11" />
-      </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          size="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="feather feather-message-circle"
+        >
+          <path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4 8.5 8.5 0 0 1-12.8 0 8.38 8.38 0 0 1-1.9-5.4 8.38 8.38 0 0 1 1.9-5.4 8.5 8.5 0 0 1 12.8 0 8.38 8.38 0 0 1 1.9 5.4z" />
+          <line x1="8" y1="11" x2="16" y2="11" />
+          <line x1="8" y1="15" x2="16" y2="15" />
+          <line x1="12" y1="7" x2="12" y2="11" />
+        </svg>
       ),
       path: "/contact",
-    }
+    },
   ];
   return (
     <div className="main-sidebar sidebar-style-2">
@@ -213,7 +210,6 @@ export default function Sidebar() {
         <ul className="sidebar-menu">
           <li className="menu-header">Asosiy</li>
 
-          {/*  */}
           {nav.map((nav, index) => {
             return (
               <li className={path.pathname == nav.path ? "active" : ""}>

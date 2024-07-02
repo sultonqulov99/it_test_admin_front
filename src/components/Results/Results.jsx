@@ -1,14 +1,26 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners";
+import { AppLayoutContext } from "../../Layouts/MainLayout";
+
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 export default function Results() {
+  const { API } = useContext(AppLayoutContext);
   const [status, setStatus] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState([]);
+  const [loading, setLoading] = useState(true);
+  let [color, setColor] = useState("#000");
+  
 
   useEffect(() => {
     axios
-      .get("https://it-test-backend.onrender.com/api/users/status/all")
+      .get(`${API}/api/users/status/all`)
       .then((res) => {
         setStatus(res.data.data);
       })
@@ -19,9 +31,10 @@ export default function Results() {
 
   function clickSelect(statusId) {
     axios
-      .get(`http://localhost:8080/api/admin/statusId/${statusId}`)
+      .get(`${API}/api/admin/statusId/${statusId}`)
       .then((res) => {
         setSubjects(res.data.data);
+        setLoading(true)
       })
       .catch((error) => {
         console.log(error);
@@ -30,9 +43,12 @@ export default function Results() {
 
   const handleClick = (subjectId) => {
     axios
-      .get(`http://localhost:8080/api/users/subjects/${subjectId}`)
+      .get(`${API}/api/users/subjects/${subjectId}`)
       .then((res) => {
-        setSelectedSubject(res.data.data);
+        if(res.data.data.length){
+          setSelectedSubject(res.data.data);
+          setLoading(false)
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -86,148 +102,159 @@ export default function Results() {
                       <div className="col-6 d-flex justify-content-end">
                         <div class="form-group w-50 me-auto">
                           <label>Search</label>
-                          <input type="text" class="form-control" />
+                          <input type="text" class="form-control" placeholder="name"/>
                         </div>
                       </div>
                     </div>
 
                     <div className="row">
                       <div className="col-sm-12">
-                        <table
-                          className="table table-striped dataTable no-footer"
-                          id="table-1"
-                          role="grid"
-                          aria-describedby="table-1_info"
-                        >
-                          <thead>
-                            <tr role="row">
-                              <th
-                                className="text-center sorting_asc"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-sort="ascending"
-                                aria-label="
+                        {loading ? ( // Show loading message if loading state is true
+                          <div className="d-flex justify-content-center">
+                            <BeatLoader
+                              color={color}
+                              loading={loading}
+                              cssOverride={override}
+                              size={30}
+                              aria-label="Loading Spinner"
+                              data-testid="loader"
+                            />
+                          </div>
+                        ) : (
+                          <table
+                            className="table table-striped dataTable no-footer"
+                            id="table-1"
+                            role="grid"
+                            aria-describedby="table-1_info"
+                          >
+                            <thead>
+                              <tr role="row">
+                                <th
+                                  className="text-center sorting_asc"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-sort="ascending"
+                                  aria-label="
                               #
                             : activate to sort column descending"
-                                style={{ width: "34.9219px;" }}
-                              >
-                                T/R
-                              </th>
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                Ism
-                              </th>
+                                  style={{ width: "34.9219px;" }}
+                                >
+                                  T/R
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Ism
+                                </th>
 
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                Familya
-                              </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Familya
+                                </th>
 
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                IQ
-                              </th>
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                Foiz
-                              </th>
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                Ball
-                              </th>
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                Kalit
-                              </th>
-                              <th
-                                className="sorting"
-                                tabIndex="0"
-                                aria-controls="table-1"
-                                rowSpan="1"
-                                colSpan="1"
-                                aria-label="Task Name: activate to sort column ascending"
-                                style={{ width: "174.219px;" }}
-                              >
-                                Urunishlar
-                              </th>
-                          
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {selectedSubject &&
-                              selectedSubject.map((select, index) => (
-                                <tr key={select.user_id._id} className="values">
-                                  <td>{index + 1}</td>
-                                  <td>
-                                    {select.user_id.name}
-                                  </td>
-                                  <td>
-                                    {select.user_id.surname}
-                                  </td>
-                                  <td>
-                                    {Math.floor(
-                                      (select.ball * 50) / 75 +
-                                        (select.key * 50) / 15 -
-                                        select.attempts
-                                    )}
-                                  </td>
-                                  <td>
-                                    {Math.floor(
-                                      (select.ball * 50) / 75 +
-                                        (select.key * 50) / 15
-                                    )}
-                                  </td>
-                                  <td>{select.ball}</td>
-                                  <td>{select.key}</td>
-                                  <td>{select.attempts}</td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  IQ
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Foiz
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Ball
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Kalit
+                                </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Urunishlar
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {selectedSubject &&
+                                selectedSubject.map((select, index) => (
+                                  <tr
+                                    key={select.user_id._id}
+                                    className="values"
+                                  >
+                                    <td>{index + 1}</td>
+                                    <td>{select.user_id.name}</td>
+                                    <td>{select.user_id.surname}</td>
+                                    <td>
+                                      {Math.floor(
+                                        (select.ball * 50) / 75 +
+                                          (select.key * 50) / 15 -
+                                          select.attempts
+                                      )}
+                                    </td>
+                                    <td>
+                                      {Math.floor(
+                                        (select.ball * 50) / 75 +
+                                          (select.key * 50) / 15
+                                      )}
+                                    </td>
+                                    <td>{select.ball}</td>
+                                    <td>{select.key}</td>
+                                    <td>{select.attempts}</td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        )}
                       </div>
                     </div>
                     <div className="row">
@@ -238,7 +265,8 @@ export default function Results() {
                           role="status"
                           aria-live="polite"
                         >
-                          Showing 1 to {selectedSubject.length} of {selectedSubject.length} entries
+                          Showing 1 to {selectedSubject.length} of{" "}
+                          {selectedSubject.length} entries
                         </div>
                       </div>
                       <div className="col-sm-12 col-md-7">

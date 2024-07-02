@@ -4,16 +4,18 @@ import "../../assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootst
 import "../../assets/css/style.css";
 import "../../assets/css/components.css";
 import "../../assets/css/custom.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AppLayoutContext } from "../../Layouts/MainLayout";
 export default function Content() {
+  const { API } = useContext(AppLayoutContext);
   const [list, setList] = useState(false);
   const [questionTests, setQuestionTests] = useState([]);
   const [count, setCount] = useState(false);
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/contacts")
+      .get(`${API}/api/contacts`)
       .then((res) => {
         setQuestionTests(res.data.data);
       })
@@ -24,7 +26,7 @@ export default function Content() {
 
   function handlerDelete(id) {
     axios
-      .delete(`http://localhost:8080/api/delete-contact/${id}`)
+      .delete(`${API}/api/delete-contact/${id}`)
       .then((res) => {
         setCount(count - 1);
       })
@@ -40,10 +42,8 @@ export default function Content() {
           : "light light-sidebar theme-white"
       }
     >
-      {/* <!-- <div class="loader"></div> --> */}
       <div id="app">
         <div class="main-wrapper main-wrapper-1">
-          {/* <!-- Main Content --> */}
           <div class="main-content">
             <section class="section">
               <div class="row">
@@ -133,18 +133,15 @@ export default function Content() {
                                         <td class="sorting_1">{index + 1}</td>
                                         <td>{el.fullName}</td>
                                         <td>{el.contact}</td>
-                                        <td>
-                                          {el.text ||
-                                            "Noma'lum"}
-                                        </td>
+                                        <td>{el.text || "Noma'lum"}</td>
 
                                         <td class="d-flex">
                                           <a
-                                            onClick={() =>{
-                                              window.confirm("Rostdan o'chirmoqchimisiz", ) &&
-                                              handlerDelete(el._id)
-                                            }
-                                            }
+                                            onClick={() => {
+                                              window.confirm(
+                                                "Rostdan o'chirmoqchimisiz"
+                                              ) && handlerDelete(el._id);
+                                            }}
                                             class="btn btn-danger"
                                           >
                                             O'chirish

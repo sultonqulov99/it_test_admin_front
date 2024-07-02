@@ -4,17 +4,22 @@ import "../assets/css/components.css"
 import "../assets/css/app.min.css"
 import "../assets/css/Kmachilik.css"
 
-import { Link, Outlet } from "react-router-dom"
-import { useState } from "react"
+import { Outlet } from "react-router-dom"
+import { createContext, useState } from "react"
 import Nav from "../components/Nav"
 import Sidebar from "../components/Sidebar"
 import Footer from "../components/Footer"
+
+export const AppLayoutContext = createContext();
+
 export default function MainLayout() {
   const [list, setList] = useState(false)
   const [qongiroq, setqongiroq] = useState(true)
   const [User, setUser] = useState(false)
+  const API = "https://it-test-backend.onrender.com"
+  
   return (
-    <body class={list ? "light light-sidebar theme-white sidebar-mini" : "light light-sidebar theme-white"}>
+    <AppLayoutContext.Provider value={{API}} class={list ? "light light-sidebar theme-white sidebar-mini" : "light light-sidebar theme-white"}>
       <div id="app">
         <div class="main-wrapper main-wrapper-1">
           <div class="navbar-bg"></div>
@@ -24,7 +29,7 @@ export default function MainLayout() {
             <Footer/>
         </div>
       </div>
-    </body>
+    </AppLayoutContext.Provider>
   )
 }
 

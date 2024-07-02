@@ -5,22 +5,20 @@ import "../../assets/css/style.css";
 import "../../assets/css/components.css";
 import "../../assets/css/Kmachilik.css";
 import "../../assets/css/custom.css";
-import USER_IMG from "../../assets/img/user.png";
-import img_logo from "../../assets/img/It live logO.png";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AppLayoutContext } from "../../Layouts/MainLayout";
 
 export default function Catigorytest_Index() {
+  const { API } = useContext(AppLayoutContext);
   const [list, setList] = useState(false);
-  const [qongiroq, setqongiroq] = useState(true);
-  const [User, setUser] = useState(false);
   const [data, setData] = useState([]);
   const [count, setcount] = useState(0);
 
   useEffect(() => {
     axios
-      .get("https://it-test-backend.onrender.com/api/users/status/all")
+      .get(`${API}/api/users/status/all`)
       .then((res) => {
         setData(res.data.data);
       })
@@ -31,7 +29,7 @@ export default function Catigorytest_Index() {
 
   function hendelDelete(id) {
     axios
-      .delete(`https://it-test-backend.onrender.com/api/status-delete/${id}`)
+      .delete(`${API}/api/status-delete/${id}`)
       .then((res) => {
         setcount(count - 1);
       })
@@ -127,14 +125,16 @@ export default function Catigorytest_Index() {
                             </thead>
                             <tbody>
                               {data.map((el, index) => {
-                                let yil = new Date(el.createdAt).getFullYear()
-                                let oy = new Date(el.createdAt).getMonth()
-                                let kun = new Date(el.createdAt).getDate()
+                                let yil = new Date(el.createdAt).getFullYear();
+                                let oy = new Date(el.createdAt).getMonth();
+                                let kun = new Date(el.createdAt).getDate();
                                 return (
                                   <tr role="row" class="odd">
                                     <td class="sorting_1">{index + 1}</td>
                                     <td>{el.name}</td>
-                                    <td>{kun}.{oy+1}.{yil}</td>
+                                    <td>
+                                      {kun}.{oy + 1}.{yil}
+                                    </td>
                                     <td class="d-flex">
                                       <Link
                                         to={"/Catigorytest_Edit/" + el._id}

@@ -4,12 +4,13 @@ import "../../assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootst
 import "../../assets/css/style.css";
 import "../../assets/css/components.css";
 import "../../assets/css/custom.css";
-import USER_IMG from "../../assets/img/user.png";
-import img_logo from "../../assets/img/It live logO.png";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AppLayoutContext } from "../../Layouts/MainLayout";
+
 export default function Questionimg_Index() {
+  const { API } = useContext(AppLayoutContext);
   const [list, setList] = useState(false);
   const [questionTests, setQuestionTests] = useState([]);
   const [count, setCount] = useState(false);
@@ -17,7 +18,7 @@ export default function Questionimg_Index() {
 
   useEffect(() => {
     axios
-      .get("https://it-test-backend.onrender.com/api/testImg/all")
+      .get(`${API}/api/testImg/all`)
       .then((res) => {
         setQuestionTests(res.data.data);
       })
@@ -29,9 +30,7 @@ export default function Questionimg_Index() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(
-          "https://it-test-backend.onrender.com/api/users/subjects/all"
-        );
+        const res = await axios.get(`${API}/api/users/subjects/all`);
         const categoryMap = {};
         res.data.data.forEach((category) => {
           categoryMap[category._id] = category.name;
@@ -46,7 +45,7 @@ export default function Questionimg_Index() {
 
   function handlerDelete(id) {
     axios
-      .delete(`https://it-test-backend.onrender.com/api/delete-testImg/${id}`)
+      .delete(`${API}/api/delete-testImg/${id}`)
       .then((res) => {
         setCount(count - 1);
       })
@@ -62,10 +61,8 @@ export default function Questionimg_Index() {
           : "light light-sidebar theme-white"
       }
     >
-      {/* <!-- <div class="loader"></div> --> */}
       <div id="app">
         <div class="main-wrapper main-wrapper-1">
-          {/* <!-- Main Content --> */}
           <div class="main-content">
             <section class="section">
               <div class="row">
@@ -178,10 +175,7 @@ export default function Questionimg_Index() {
                                         <td class="sorting_1">{index + 1}</td>
                                         <td>
                                           <img
-                                            src={
-                                              "https://it-test-backend.onrender.com/" +
-                                              el.img
-                                            }
+                                            src={`${API}/` + el.img}
                                             alt=""
                                             width="80"
                                             height="50"
@@ -196,12 +190,12 @@ export default function Questionimg_Index() {
                                         <td>{el.correct_answer}</td>
 
                                         <td class="d-flex">
-                                          <a
-                                            href="./edit.html"
+                                          <Link
+                                            to={"/Questionimg_Edit/" + el._id}
                                             class="btn btn-success"
                                           >
                                             Edit
-                                          </a>
+                                          </Link>
                                           <a
                                             onClick={() => {
                                               window.confirm(

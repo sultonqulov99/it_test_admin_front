@@ -1,7 +1,12 @@
 import React from "react";
-import USER_IMG from "../assets/img/user.png"
+import { Link } from "react-router-dom";
+import USER_IMG from "../assets/img/user.png";
 
-export default function Nav({ list , setList, qongiroq, setqongiroq, setUser, User }) {
+export default function Nav({
+  setList,
+  setUser,
+  User,
+}) {
   return (
     <nav class="navbar navbar-expand-lg main-navbar sticky">
       <div class="form-inline mr-auto">
@@ -60,7 +65,7 @@ export default function Nav({ list , setList, qongiroq, setqongiroq, setUser, Us
             }
           >
             <div class="dropdown-title">Salom Admin</div>
-            <a href="profile.html" class="dropdown-item has-icon">
+            <a href="#" class="dropdown-item has-icon">
               {" "}
               <i
                 class="far
@@ -68,25 +73,16 @@ export default function Nav({ list , setList, qongiroq, setqongiroq, setUser, Us
               ></i>{" "}
               Profile
             </a>{" "}
-            <a href="timeline.html" class="dropdown-item has-icon">
-              {" "}
-              <i class="fas fa-bolt"></i>
-              Activities
-            </a>{" "}
-            <a href="#" class="dropdown-item has-icon">
-              {" "}
-              <i class="fas fa-cog"></i>
-              O'rnatish
-            </a>
             <div class="dropdown-divider"></div>
-            <a
-              href="auth-login.html"
+            <Link
+              to={"/login"}
               class="dropdown-item has-icon text-danger"
+              onClick={() => window.localStorage.clear()}
             >
               {" "}
               <i class="fas fa-sign-out-alt"></i>
               Chiqish
-            </a>
+            </Link>
           </div>
         </li>
       </ul>

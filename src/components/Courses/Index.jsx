@@ -4,21 +4,20 @@ import "../../assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootst
 import "../../assets/css/style.css";
 import "../../assets/css/components.css";
 import "../../assets/css/custom.css";
-import USER_IMG from "../../assets/img/user.png";
-import img_logo from "../../assets/img/It live logO.png";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { AppLayoutContext } from "../../Layouts/MainLayout";
 
 export default function Courses_index() {
+  const { API } = useContext(AppLayoutContext);
   const [list, setList] = useState(false);
-  const [qongiroq, setqongiroq] = useState(true);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState({});
   const [count, setcount] = useState(0);
 
   useEffect(() => {
-    axios("https://it-test-backend.onrender.com/api/users/subjects/all")
+    axios(`${API}/api/users/subjects/all`)
       .then((res) => {
         setData(res.data.data);
       })
@@ -30,9 +29,7 @@ export default function Courses_index() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(
-          "https://it-test-backend.onrender.com/api/users/status/all"
-        );
+        const res = await axios.get(`${API}/api/users/status/all`);
         const categoryMap = {};
         res.data.data.forEach((category) => {
           categoryMap[category._id] = category.name;
@@ -47,7 +44,7 @@ export default function Courses_index() {
 
   function hendelDelete(id) {
     axios
-      .delete(`https://it-test-backend.onrender.com/api/subject-delete/${id}`)
+      .delete(`${API}/api/subject-delete/${id}`)
       .then((res) => {
         setcount(count - 1);
       })
@@ -113,6 +110,16 @@ export default function Courses_index() {
                                       colSpan="1"
                                       aria-label="Task Name: activate to sort column ascending"
                                     >
+                                      Fan Rasmi
+                                    </th>
+                                    <th
+                                      className="sorting"
+                                      tabIndex="0"
+                                      aria-controls="table-1"
+                                      rowSpan="1"
+                                      colSpan="1"
+                                      aria-label="Task Name: activate to sort column ascending"
+                                    >
                                       Fan Nomi
                                     </th>
                                     <th
@@ -159,18 +166,37 @@ export default function Courses_index() {
                                 </thead>
                                 <tbody>
                                   {data.map((el, index) => {
-                                    console.log(el)
-                                    let yil = new Date(el.createdAt).getFullYear()
-                                    let oy = new Date(el.createdAt).getMonth()
-                                    let kun = new Date(el.createdAt).getDate()
-                                    return <tr role="row" className="odd" key={el._id}>
-                                        <td className="sorting_1">{index + 1}</td>
+                                    let yil = new Date(
+                                      el.createdAt
+                                    ).getFullYear();
+                                    let oy = new Date(el.createdAt).getMonth();
+                                    let kun = new Date(el.createdAt).getDate();
+                                    return (
+                                      <tr
+                                        role="row"
+                                        className="odd"
+                                        key={el._id}
+                                      >
+                                        <td className="sorting_1">
+                                          {index + 1}
+                                        </td>
+                                        <td>
+                                          <img
+                                            src={`${API}/` + el.fileName}
+                                            alt=""
+                                            width="80"
+                                            height="50"
+                                          />
+                                        </td>
                                         <td>{el.name}</td>
                                         <td>{el.level ? el.level : 1}</td>
                                         <td>
-                                          {categories[el.status_id] || "Noma'lum"}
+                                          {categories[el.status_id] ||
+                                            "Noma'lum"}
                                         </td>
-                                        <td>{kun}.{oy+1}.{yil}</td>
+                                        <td>
+                                          {kun}.{oy + 1}.{yil}
+                                        </td>
                                         <td className="d-flex">
                                           <Link
                                             to={"/Courses_Edit/" + el._id}
@@ -191,6 +217,7 @@ export default function Courses_index() {
                                           </a>
                                         </td>
                                       </tr>
+                                    );
                                   })}
                                 </tbody>
                               </table>
