@@ -1,11 +1,9 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppLayoutContext } from "../../../Layouts/MainLayout";
 import "./Login.css";
 
 const Login = () => {
-  const { API } = useContext(AppLayoutContext);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
@@ -16,7 +14,7 @@ const Login = () => {
     console.log("Telefon raqami:", phoneNumber);
     console.log("Parol:", password);
     axios
-      .post(`${API}/api/admin/login`, {
+      .post(`https://it-test-backend.onrender.com/api/admin/login`, {
         contact: phoneNumber,
         password: password,
       })
