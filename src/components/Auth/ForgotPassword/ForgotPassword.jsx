@@ -6,7 +6,7 @@ import { AppLayoutContext } from "../../../Layouts/MainLayout";
 import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
-  const { API } = useContext(AppLayoutContext);
+  const API  = "http://localhost:8080"
   const [phone, setPhone] = useState("");
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [newPassword, setNewPassword] = useState("");

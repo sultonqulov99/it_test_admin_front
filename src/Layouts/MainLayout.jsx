@@ -16,7 +16,7 @@ export default function MainLayout() {
   const [list, setList] = useState(false)
   const [qongiroq, setqongiroq] = useState(true)
   const [User, setUser] = useState(false)
-  const API = "https://it-test-backend.onrender.com"
+  const API = "http://localhost:8080"
   
   return (
     <AppLayoutContext.Provider value={{API}} class={list ? "light light-sidebar theme-white sidebar-mini" : "light light-sidebar theme-white"}>

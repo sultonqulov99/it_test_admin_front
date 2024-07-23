@@ -14,7 +14,7 @@ const Login = () => {
     console.log("Telefon raqami:", phoneNumber);
     console.log("Parol:", password);
     axios
-      .post(`https://it-test-backend.onrender.com/api/admin/login`, {
+      .post(`http://localhost:8080/api/admin/login`, {
         contact: phoneNumber,
         password: password,
       })

@@ -106,6 +106,7 @@ export default function Questionimg_Create() {
                             class="form-control"
                             id="categoriya"
                           >
+                            <option value="tanla">Tanlang...</option>
                             {datas.map((data) => {
                               return (
                                 <option value={data._id}>{data.name}</option>

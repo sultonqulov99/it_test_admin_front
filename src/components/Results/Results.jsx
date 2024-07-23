@@ -16,7 +16,7 @@ export default function Results() {
   const [selectedSubject, setSelectedSubject] = useState([]);
   const [loading, setLoading] = useState(true);
   let [color, setColor] = useState("#000");
-  
+  let [subject, setSubject] = useState("#000");
 
   useEffect(() => {
     axios
@@ -34,7 +34,7 @@ export default function Results() {
       .get(`${API}/api/admin/statusId/${statusId}`)
       .then((res) => {
         setSubjects(res.data.data);
-        setLoading(true)
+        setLoading(true);
       })
       .catch((error) => {
         console.log(error);
@@ -45,15 +45,42 @@ export default function Results() {
     axios
       .get(`${API}/api/users/subjects/${subjectId}`)
       .then((res) => {
-        if(res.data.data.length){
+        if (res.data.data.length) {
+          let subjectsData = res.data.data;
+          subjectsData.sort((a, b) => {
+            const iqA = Math.floor(
+              (a.ball * 50) / 75 + (a.key * 50) / 15 - a.attempts
+            );
+            const iqB = Math.floor(
+              (b.ball * 50) / 75 + (b.key * 50) / 15 - b.attempts
+            );
+            const percentA = Math.floor((a.ball * 50) / 75 + (a.key * 50) / 15);
+            const percentB = Math.floor((b.ball * 50) / 75 + (b.key * 50) / 15);
+
+            if (iqA !== iqB) return iqB - iqA;
+            if (percentA !== percentB) return percentB - percentA;
+            if (a.ball !== b.ball) return b.ball - a.ball;
+            if (a.key !== b.key) return b.key - a.key;
+            return a.attempts - b.attempts;
+          });
           setSelectedSubject(res.data.data);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  function handlerDelete(id) {
+    axios
+      .delete(`${API}/api/delete-keyball/${id}`)
+      .then((res) => {
+        handleClick(subject);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <div className="main-content">
@@ -89,7 +116,10 @@ export default function Results() {
                         <div class="form-group">
                           <label>Subject</label>
                           <select
-                            onClick={(e) => handleClick(e.target.value)}
+                            onClick={(e) => {
+                              handleClick(e.target.value)
+                              setSubject(e.target.value)
+                            }}
                             class="form-control"
                           >
                             <option>Tanlang...</option>
@@ -102,7 +132,11 @@ export default function Results() {
                       <div className="col-6 d-flex justify-content-end">
                         <div class="form-group w-50 me-auto">
                           <label>Search</label>
-                          <input type="text" class="form-control" placeholder="name"/>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="name"
+                          />
                         </div>
                       </div>
                     </div>
@@ -166,6 +200,17 @@ export default function Results() {
                                 >
                                   Familya
                                 </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Viloyat
+                                </th>
 
                                 <th
                                   className="sorting"
@@ -222,6 +267,17 @@ export default function Results() {
                                 >
                                   Urunishlar
                                 </th>
+                                <th
+                                  className="sorting"
+                                  tabIndex="0"
+                                  aria-controls="table-1"
+                                  rowSpan="1"
+                                  colSpan="1"
+                                  aria-label="Task Name: activate to sort column ascending"
+                                  style={{ width: "174.219px;" }}
+                                >
+                                  Holat
+                                </th>
                               </tr>
                             </thead>
                             <tbody>
@@ -234,6 +290,7 @@ export default function Results() {
                                     <td>{index + 1}</td>
                                     <td>{select.user_id.name}</td>
                                     <td>{select.user_id.surname}</td>
+                                    <td>{select.user_id.region}</td>
                                     <td>
                                       {Math.floor(
                                         (select.ball * 50) / 75 +
@@ -250,6 +307,18 @@ export default function Results() {
                                     <td>{select.ball}</td>
                                     <td>{select.key}</td>
                                     <td>{select.attempts}</td>
+                                    <td class="d-flex">
+                                      <a
+                                        onClick={() => {
+                                          window.confirm(
+                                            "Rostdan o'chirmoqchimisiz"
+                                          ) && handlerDelete(select._id);
+                                        }}
+                                        class="btn btn-danger"
+                                      >
+                                        O'chirish
+                                      </a>
+                                    </td>
                                   </tr>
                                 ))}
                             </tbody>
